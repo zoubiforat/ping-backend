@@ -1,6 +1,6 @@
-import { IsInt, IsNotEmpty, IsNumber, IsPositive, IsString, IsUrl } from "class-validator";
+import { IsNotEmpty, IsUrl, IsString, IsNumber, IsPositive, IsInt } from "class-validator";
 
-export class PingExecuterDto {
+export class AddPingStatisticDto {
     @IsUrl()
     @IsString()
     @IsNotEmpty()

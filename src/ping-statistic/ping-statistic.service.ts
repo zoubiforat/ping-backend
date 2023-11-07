@@ -1,26 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePingStatisticDto } from './dto/create-ping-statistic.dto';
-import { UpdatePingStatisticDto } from './dto/update-ping-statistic.dto';
+import { AddPingStatisticDto } from './dto/add-ping-statistic.dto';
+import { PingStatistic } from './entities/ping-statistic.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PingStatisticService {
-  create(createPingStatisticDto: CreatePingStatisticDto) {
-    return 'This action adds a new pingStatistic';
+
+  constructor(@InjectRepository(PingStatistic)
+  private pingStatisticRepository: Repository<PingStatistic>){}
+
+  async addStatistic(addPingStatisticDto: AddPingStatisticDto) {
+    const statistic: PingStatistic | null = await this.pingStatisticRepository.findOne(
+      {
+       where: {
+        host: addPingStatisticDto.host,
+       }
+      }
+    );
+    if (statistic){
+      this.pingStatisticRepository.update(
+        {
+          id: statistic.id,
+        },
+        {
+          ...statistic,
+          count: statistic.count + addPingStatisticDto.count,
+        }
+      );
+    } else {
+      this.pingStatisticRepository.insert(addPingStatisticDto);
+    }
   }
 
-  findAll() {
-    return `This action returns all pingStatistic`;
+  getTopStatistics(count: number): Promise<PingStatistic[]>{
+    return this.pingStatisticRepository.find(
+      {
+        order: {
+          count: "DESC",
+        },
+        take: count,
+      }
+    );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pingStatistic`;
-  }
-
-  update(id: number, updatePingStatisticDto: UpdatePingStatisticDto) {
-    return `This action updates a #${id} pingStatistic`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} pingStatistic`;
+  removeAll() {
+    return `This action removes pingStatistics`;
   }
 }
