@@ -36,7 +36,10 @@ $ npm install
 
 1. ensure you have a postgresql instance + user (mysql/mariadb/cockroach etc... can be used as well) 
 2. create a .env file in the root directory as described in the .env.template
-3. if you haven't used PostgreSQL you will need to navigate to app.module.ts and change the type on line 14 to that other type of database
+3. navigate to app.module.ts
+   1. to let the ORM create you database for the first time uncomment the line 22 (synchronize)
+   2. if you want to see logs of the database actions uncomment the line 23 (logging)
+   3. if you haven't used PostgreSQL you will need to change the type on line 14 to that other type of database
 
 ## Running the app
 
