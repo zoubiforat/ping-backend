@@ -32,6 +32,12 @@
 $ npm install
 ```
 
+## Setup
+
+1. ensure you have a postgresql instance + user (mysql/mariadb/cockroach etc... can be used as well) 
+2. create a .env file in the root directory as described in the .env.template
+3. if you haven't used PostgreSQL you will need to navigate to app.module.ts and change the type on line 14 to that other type of database
+
 ## Running the app
 
 ```bash
